@@ -1,6 +1,4 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap");
-
 * {
   margin: 0;
   padding: 0;
@@ -28,7 +26,6 @@ body {
   z-index: 100;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
-
 .navbar .container {
   display: flex;
   flex-direction: row;
@@ -39,14 +36,12 @@ body {
   max-width: 1200px;
   padding: 0;
 }
-
 .navbar .logo {
   display: flex;
   align-items: center;
   gap: 0.25rem;
   cursor: pointer;
 }
-
 .navbar .logo h2 {
   font-size: 1.5rem;
   text-transform: uppercase;
@@ -56,23 +51,19 @@ body {
   -webkit-background-clip: initial;
   -webkit-text-fill-color: initial;
 }
-
 .navbar .logo .macro {
   color: white;
   font-weight: 800;
 }
-
 .navbar .logo .tracker {
   color: #6366f1;
   opacity: 0.9;
   font-weight: 800;
 }
-
 .navbar .nav-links {
   display: flex;
   gap: 2.5rem;
 }
-
 .navbar .nav-links a {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.95rem;
@@ -81,11 +72,9 @@ body {
   position: relative;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .navbar .nav-links a:hover {
   color: white;
 }
-
 .navbar .nav-links a::after {
   content: "";
   position: absolute;
@@ -96,11 +85,9 @@ body {
   background-color: #6366f1;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .navbar .nav-links a:hover::after {
   width: 100%;
 }
-
 .navbar .usuario img {
   width: 40px;
   height: 40px;
@@ -111,7 +98,6 @@ body {
   transition: transform 0.2s;
   object-fit: cover;
 }
-
 .navbar .usuario img:hover {
   transform: scale(1.1);
 }
@@ -132,21 +118,18 @@ body {
   backdrop-filter: blur(12px);
   border-radius: 24px;
 }
-
 .container-resumen .resumen {
   font-size: 2rem;
   margin-bottom: 30px;
   font-weight: 700;
   color: #f8fafc;
 }
-
 .container-resumen .resumen-contenido {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   margin-bottom: 30px;
 }
-
 .container-resumen .resumen-contenido .resumen-item {
   padding: 24px;
   background: rgba(255, 255, 255, 0.03);
@@ -158,12 +141,10 @@ body {
   flex-direction: column;
   gap: 12px;
 }
-
 .container-resumen .resumen-contenido .resumen-item:hover {
   transform: translateY(-5px);
   border-color: rgba(255, 255, 255, 0.2);
 }
-
 .container-resumen .resumen-contenido .resumen-item .resumen-item-titulo {
   font-size: 0.85rem;
   color: #94a3b8;
@@ -171,51 +152,40 @@ body {
   letter-spacing: 1.5px;
   font-weight: 600;
 }
-
 .container-resumen .resumen-contenido .resumen-item .resumen-item-valor {
   font-size: 2rem;
   font-weight: 700;
 }
-
 .container-resumen .resumen-contenido .resumen-item:nth-of-type(1) {
   border-left: 4px solid #ff7e5f;
 }
-
 .container-resumen .resumen-contenido .resumen-item:nth-of-type(1) .resumen-item-valor {
   color: #ff7e5f;
 }
-
 .container-resumen .resumen-contenido .resumen-item:nth-of-type(2) {
   border-left: 4px solid #3b82f6;
 }
-
 .container-resumen .resumen-contenido .resumen-item:nth-of-type(2) .resumen-item-valor {
   color: #3b82f6;
 }
-
 .container-resumen .resumen-contenido .resumen-item:nth-of-type(3) {
   border-left: 4px solid #10b981;
 }
-
 .container-resumen .resumen-contenido .resumen-item:nth-of-type(3) .resumen-item-valor {
   color: #10b981;
 }
-
 .container-resumen .resumen-contenido .resumen-item:nth-of-type(4) {
   border-left: 4px solid #f59e0b;
 }
-
 .container-resumen .resumen-contenido .resumen-item:nth-of-type(4) .resumen-item-valor {
   color: #f59e0b;
 }
-
 .container-resumen .acciones {
   display: flex;
   gap: 15px;
   margin-top: 30px;
   flex-wrap: wrap;
 }
-
 .container-resumen .acciones button {
   flex: 1;
   min-width: 160px;
@@ -233,32 +203,26 @@ body {
   font-family: "Outfit", sans-serif;
   font-size: 0.95rem;
 }
-
 .container-resumen .acciones button:hover {
   filter: brightness(1.1);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-
 .container-resumen .acciones button.btn-añadir {
   background: #10b981;
 }
-
 .container-resumen .acciones button.btn-escanear {
   background: #7c3aed;
 }
-
 .container-resumen .acciones button.btn-buscar {
   background: #3b82f6;
 }
-
 .container-resumen .acciones button.btn-buscar .buscar {
   width: 20px;
   height: 20px;
   object-fit: contain;
   filter: brightness(0) invert(1);
 }
-
 .container-resumen .barra {
   width: 100%;
   height: 6px;
@@ -267,25 +231,20 @@ body {
   margin-top: 15px;
   overflow: hidden;
 }
-
 .container-resumen .barra-progreso {
   height: 100%;
   border-radius: 999px;
   transition: width 0.6s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }
-
 .container-resumen .barra-calorias {
   background: #ff7e5f;
 }
-
 .container-resumen .barra-proteina {
   background: #3b82f6;
 }
-
 .container-resumen .barra-carbo {
   background: #10b981;
 }
-
 .container-resumen .barra-grasa {
   background: #f59e0b;
 }
@@ -299,13 +258,11 @@ body {
   border-radius: 24px;
   align-self: flex-start;
 }
-
 .progreso .progreso-titulo {
   font-size: 1.5rem;
   margin-bottom: 25px;
   font-weight: 700;
 }
-
 .progreso .btn-guardar,
 .progreso .btn-reiniciar {
   width: 100%;
@@ -319,25 +276,69 @@ body {
   font-family: "Outfit", sans-serif;
   font-size: 1rem;
 }
-
 .progreso .btn-guardar {
   background: #6366f1;
   color: white;
 }
-
 .progreso .btn-guardar:hover {
-  background: #7a7df3;
+  background: rgb(122.4, 124.95, 243.1);
   box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
 }
-
 .progreso .btn-reiniciar {
   background: rgba(255, 255, 255, 0.03);
   color: #f8fafc;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 .progreso .btn-reiniciar:hover {
   background: rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================
+   FIX: Botones de eliminar
+   ========================== */
+/* Card de día guardado */
+.dia-card {
+  position: relative;
+}
+
+/* Botón eliminar DÍA guardado (×) */
+.btn-borrar-dia-historial {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border-radius: 50%;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.btn-borrar-dia-historial:hover {
+  background: #ef4444;
+  color: white;
+  transform: rotate(90deg);
+}
+
+/* Botón eliminar ALIMENTO (historial diario) */
+.historial-borrar {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+.historial-borrar:hover {
+  background: #ef4444;
+  color: white;
 }
 
 .ai-card {
@@ -353,7 +354,6 @@ body {
   text-align: center;
   position: relative;
 }
-
 .ai-card::after {
   content: "✨";
   position: absolute;
@@ -362,7 +362,6 @@ body {
   font-size: 1.5rem;
   opacity: 0.2;
 }
-
 .ai-card .sub-title {
   font-size: 2rem;
   font-weight: 700;
@@ -372,7 +371,6 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 .ai-card .ai-placeholder {
   color: #94a3b8;
   background: rgba(255, 255, 255, 0.02);
@@ -383,7 +381,6 @@ body {
   line-height: 1.8;
   font-size: 1.1rem;
 }
-
 .ai-card .btn-ai-action {
   background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
   color: white;
@@ -397,7 +394,6 @@ body {
   letter-spacing: 2px;
   font-size: 0.9rem;
 }
-
 .ai-card .btn-ai-action:hover {
   box-shadow: 0 10px 30px rgba(124, 58, 237, 0.5);
   transform: scale(1.05);
@@ -408,86 +404,94 @@ body {
     width: 95%;
   }
 }
-
 @media (max-width: 1024px) {
   .main-content {
     flex-direction: column;
     align-items: stretch;
   }
-
   .container-resumen,
   .progreso {
     width: 100%;
   }
-
   .resumen-contenido {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (max-width: 768px) {
   .navbar .container {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem 0;
   }
-
   .navbar .nav-links {
     gap: 1.5rem;
     flex-wrap: wrap;
     justify-content: center;
   }
-
   .container-resumen {
     padding: 25px;
   }
-
   .container-resumen .resumen {
     font-size: 1.6rem;
     text-align: center;
   }
-
   .container-resumen .resumen-contenido {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-
   .container-resumen .acciones {
     flex-direction: column;
   }
-
   .container-resumen .acciones button {
     width: 100%;
   }
-
+  .lista-dias {
+    grid-template-columns: 1fr;
+  }
+  .dia-card .btn-borrar-dia-historial {
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+  .dia-card .btn-borrar-dia-historial:hover {
+    background: #ef4444;
+    color: white;
+    transform: rotate(90deg);
+  }
   .ai-card {
     padding: 30px 20px;
   }
-
   .ai-card .sub-title {
     font-size: 1.6rem;
   }
-
   .ai-card .ai-placeholder {
     padding: 25px;
     font-size: 1rem;
   }
 }
-
 @media (max-width: 480px) {
   .navbar .logo h2 {
     font-size: 1.2rem;
   }
-
   .container-resumen {
     padding: 20px 15px;
   }
-
   .resumen-item {
     padding: 20px;
   }
-
   .resumen-item .resumen-item-valor {
     font-size: 1.6rem;
   }
 }
+
+/*# sourceMappingURL=home.css.map */
