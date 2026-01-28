@@ -179,6 +179,8 @@ btnAiAction.addEventListener('click', () => {
     aiTips.innerHTML = '';
     tips.forEach(tip => {
         const p = document.createElement('p');
+        p.style.marginBottom = "10px";
+        p.style.animation = "fadeIn 0.5s ease-out";
         p.textContent = tip;
         aiTips.appendChild(p);
     });
