@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     presentation.style.display = 'none';
                 }
             }
+            if (btn.classList.contains('btn-start')) {
+                window.location.href = '/Chat-IA/chat.html';
+            }
         });
     });
 });
