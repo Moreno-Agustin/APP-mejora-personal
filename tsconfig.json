@@ -19,7 +19,8 @@
     "include": [
         "src/**/*",
         "habitos/src/**/*",
-        "Medidor de macros/src/**/*"
+        "Medidor de macros/src/**/*",
+        "Chat-IA/Src/**/*"
     ],
     "exclude": [
         "node_modules",
