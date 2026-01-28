@@ -1,32 +1,33 @@
-// Variables - Refined for a Modern, Premium look
-$primary-color: #6366F1; // Indigo (Modern)
+// ==========================
+// 1. VARIABLES
+// ==========================
+$primary-color: #6366F1;
 $primary-hover: #4F46E5;
-$accent-color: #8B5CF6; // Violet
-$danger-color: #F43F5E; // Rose
+$accent-color: #8B5CF6;
+$danger-color: #F43F5E;
 $danger-hover: #E11D48;
-$success-color: #10B981; // Emerald
-
-$bg-color: #F8FAFC; // Slate 50 (Very clean light background)
-$bg-dark: #0F172A; // Slate 900 (Deep modern dark)
+$success-color: #10B981;
+$bg-color: #F8FAFC;
+$bg-dark: #0F172A;
 $card-bg: #FFFFFF;
-$text-main: #1E293B; // Slate 800
-$text-secondary: #64748B; // Slate 500
-$text-muted: #94A3B8; // Slate 400
-
-$border-color: #F1F5F9; // Slate 100
-$border-soft: #E2E8F0; // Slate 200
-
+$text-main: #1E293B;
+$text-secondary: #64748B;
+$text-muted: #94A3B8;
+$border-color: #F1F5F9;
+$border-soft: #E2E8F0;
 $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
 $shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 $shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
 $shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
-
 $radius-sm: 8px;
 $radius: 16px;
 $radius-lg: 24px;
 $font-stack: 'Inter', system-ui, -apple-system, sans-serif;
 $transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+// ==========================
+// 2. RESET Y ESTILOS BASE
+// ==========================
 body {
     margin: 0;
     padding: 0;
@@ -53,9 +54,9 @@ hr {
     width: 100%;
 }
 
-//=========== 
-// Navbar
-//=========== 
+// ==========================
+// 3. NAVEGACIÓN
+// ==========================
 .navbar {
     background-color: $bg-dark;
     padding: 1.25rem 0;
@@ -150,9 +151,9 @@ hr {
     }
 }
 
-//=========== 
-// Main Content
-//=========== 
+// ==========================
+// 4. DISEÑO DE PÁGINA
+// ==========================
 .container {
     width: 95%;
     max-width: 1200px;
@@ -179,125 +180,132 @@ hr {
         gap: 2.5rem;
         width: 100%;
     }
+}
 
-    .box {
-        background-color: $card-bg;
-        border-radius: $radius-lg;
-        padding: 2.5rem;
-        border: 1px solid $border-color;
-        box-shadow: $shadow-lg;
+// ==========================
+// 5. COMPONENTES (BOARDS/CARDS)
+// ==========================
+.box {
+    background-color: $card-bg;
+    border-radius: $radius-lg;
+    padding: 2.5rem;
+    border: 1px solid $border-color;
+    box-shadow: $shadow-lg;
+    transition: $transition-normal;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(to right, $primary-color, $accent-color);
+        opacity: 0;
         transition: $transition-normal;
-        position: relative;
-        overflow: hidden;
+    }
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: $shadow-premium;
+        border-color: $border-soft;
 
         &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(to right, $primary-color, $accent-color);
-            opacity: 0;
-            transition: $transition-normal;
+            opacity: 1;
         }
+    }
+
+    .box-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sub-title {
+        font-size: 1.75rem;
+        color: $bg-dark;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        &::before {
+            content: '•';
+            color: $primary-color;
+            font-size: 2rem;
+        }
+    }
+}
+
+// ==========================
+// 6. GESTIÓN DE HÁBITOS
+// ==========================
+.list-habits {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+
+    .habit {
+        background-color: $bg-color;
+        border: 1px solid transparent;
+        border-radius: $radius;
+        padding: 1.25rem;
+        transition: $transition-normal;
 
         &:hover {
-            transform: translateY(-8px);
-            box-shadow: $shadow-premium;
-            border-color: $border-soft;
-
-            &::before {
-                opacity: 1;
-            }
+            background-color: white;
+            border-color: $primary-color;
+            box-shadow: $shadow-sm;
+            transform: translateX(5px);
         }
 
-        .box-content {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sub-title {
-            font-size: 1.75rem;
-            color: $bg-dark;
-            margin-bottom: 1rem;
+        .habit-content {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            justify-content: space-between;
+            gap: 1rem;
 
-            &::before {
-                content: '•';
-                color: $primary-color;
-                font-size: 2rem;
+            .habit-name h3 {
+                font-size: 1.15rem;
+                font-weight: 600;
+                color: $text-main;
             }
-        }
 
-        // Habit List Styles
-        .list-habits {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            margin-top: 1.5rem;
-
-            .habit {
-                background-color: $bg-color;
-                border: 1px solid transparent;
-                border-radius: $radius;
-                padding: 1.25rem;
-                transition: $transition-normal;
-
-                &:hover {
-                    background-color: white;
-                    border-color: $primary-color;
-                    box-shadow: $shadow-sm;
-                    transform: translateX(5px);
-                }
-
-                .habit-content {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 1rem;
-
-                    .habit-name h3 {
-                        font-size: 1.15rem;
-                        font-weight: 600;
-                        color: $text-main;
-                    }
-
-                    .habit-actions {
-                        display: flex;
-                        gap: 0.75rem;
-                    }
-                }
-            }
-        }
-
-        // AI Recommendations Content
-        .ai-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 2rem;
-            padding: 2rem 0;
-            min-height: 150px;
-            justify-content: center;
-
-            .ai-placeholder {
-                color: $text-secondary;
-                font-style: italic;
-                font-size: 1.1rem;
-                line-height: 1.6;
-                max-width: 80%;
+            .habit-actions {
+                display: flex;
+                gap: 0.75rem;
             }
         }
     }
 }
 
-//=========== 
-// Buttons
-//=========== 
+// ==========================
+// 7. SECCIÓN IA
+// ==========================
+.ai-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    min-height: 150px;
+    justify-content: center;
+
+    .ai-placeholder {
+        color: $text-secondary;
+        font-style: italic;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        max-width: 80%;
+    }
+}
+
+// ==========================
+// 8. BOTONES
+// ==========================
 button {
     cursor: pointer;
     border: none;
@@ -334,7 +342,6 @@ button {
     color: $primary-color;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
-    border: 1px solid transparent;
 
     &:hover {
         background-color: $primary-color;
@@ -370,7 +377,9 @@ button {
     }
 }
 
-// Custom animations
+// ==========================
+// 9. ANIMACIONES Y ESTADOS
+// ==========================
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -391,10 +400,9 @@ button {
     background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.05), transparent), white !important;
 }
 
-//=========== 
-// Responsive
-//===========
-
+// ==========================
+// 10. MEDIA QUERIES
+// ==========================
 @media (max-width: 768px) {
     .navbar .container {
         flex-direction: column;
@@ -411,7 +419,6 @@ button {
     .container {
         .title {
             font-size: 2.25rem;
-            margin-bottom: 2.5rem;
         }
 
         .cards-wrapper {
