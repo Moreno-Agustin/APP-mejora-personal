@@ -309,7 +309,7 @@ body {
   width: 35px;
   height: 35px;
   background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
+  color: #f32e2e;
   border-radius: 50%;
   border: 1px solid rgba(239, 68, 68, 0.3);
   font-size: 1.4rem;
@@ -320,7 +320,7 @@ body {
   transition: all 0.3s ease;
 }
 .btn-borrar-dia-historial:hover {
-  background: #ef4444;
+  background: #f32e2e;
   color: white;
   transform: rotate(90deg);
 }
