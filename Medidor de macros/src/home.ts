@@ -29,6 +29,19 @@ interface DiaGuardado {
 document.addEventListener("DOMContentLoaded", () => {
 
     // ==========================
+    // 0. NAVBAR MOBILE
+    // ==========================
+    const navToggle = document.querySelector("#navToggle");
+    const navLinks = document.querySelector("#navLinks");
+
+    if (navToggle && navLinks) {
+        navToggle.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+            navToggle.textContent = navLinks.classList.contains("active") ? "✕" : "☰";
+        });
+    }
+
+    // ==========================
     // 1. OBJETIVOS DIARIOS
     // ==========================
     const objetivos: Macros = {
@@ -244,11 +257,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const kcalTotal = document.createElement("p");
             kcalTotal.textContent = `Total: ${Math.round(dia.kcal)} kcal`;
             kcalTotal.style.fontWeight = "bold";
-            kcalTotal.style.color = "#243358";
+            kcalTotal.style.color = "#f8fafc"; // Adjusted for dark theme
 
             const macrosDisplay = document.createElement("p");
             macrosDisplay.style.fontSize = "0.85rem";
-            macrosDisplay.style.color = "#666";
+            macrosDisplay.style.color = "#94a3b8"; // Adjusted for dark theme
             macrosDisplay.textContent = `P: ${Math.round(dia.macros.pro)} | C: ${Math.round(dia.macros.carb)} | G: ${Math.round(dia.macros.grasa)}`;
 
             const btnBorrar = document.createElement("button");
