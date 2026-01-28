@@ -295,6 +295,47 @@ document.addEventListener("DOMContentLoaded", () => {
             render();
         });
     }
+    const btnAi = document.querySelector("#BtnAiAction");
+    const aiTips = document.querySelector("#aiTips");
+    if (btnAi && aiTips) {
+        btnAi.addEventListener("click", () => {
+            generarRecomendacionesIA();
+        });
+    }
+    function generarRecomendacionesIA() {
+        const tips = [];
+        const faltaKcal = objetivos.kcal - estado.kcal;
+        if (estado.kcal === 0) {
+            tips.push("¡Comienza tu día registrando tu primera comida! 🍳");
+        }
+        else if (faltaKcal > 500) {
+            tips.push(`Todavía te faltan ${Math.round(faltaKcal)} kcal. Prioriza fuentes de proteína. 🥩`);
+        }
+        else if (faltaKcal <= 500 && faltaKcal > 0) {
+            tips.push("Estás cerca de tu objetivo calórico. Opta por snacks ligeros. 🍎");
+        }
+        else if (faltaKcal <= 0) {
+            tips.push("Has alcanzado tu objetivo de calorías por hoy. ¡Buen trabajo! ✅");
+        }
+        // Análisis de Proteína
+        if (estado.pro < objetivos.pro * 0.7 && estado.kcal > 0) {
+            tips.push("Tu consumo de proteínas es bajo. Intenta añadir claras de huevo o pollo. 🍗");
+        }
+        // Análisis de Grasas
+        if (estado.grasa > objetivos.grasa) {
+            tips.push("Has superado tu límite de grasas. Reduce aceites y frutos secos por hoy. 🥑");
+        }
+        if (aiTips) {
+            aiTips.innerHTML = "";
+            tips.forEach(tip => {
+                const p = document.createElement("p");
+                p.style.marginBottom = "10px";
+                p.style.animation = "fadeIn 0.5s ease-out";
+                p.textContent = tip;
+                aiTips.appendChild(p);
+            });
+        }
+    }
     // ==========================
     // 9. PERSISTENCIA
     // ==========================
