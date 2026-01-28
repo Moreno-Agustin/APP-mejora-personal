@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     (presentation as HTMLElement).style.display = 'none';
                 }
             }
+
+            if (btn.classList.contains('btn-start')) {
+                window.location.href = './Chat-IA/macro-ai/index.html';
+            }
         });
     });
 });
