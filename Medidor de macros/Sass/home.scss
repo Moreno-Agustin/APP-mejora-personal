@@ -80,28 +80,34 @@ body {
     .logo {
         display: flex;
         align-items: center;
-        gap: 0.25rem;
+        gap: 0.5rem;
         cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 12px;
+        transition: $transition-smooth;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
 
         h2 {
             font-size: 1.5rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: none;
-            background-clip: initial;
-            -webkit-background-clip: initial;
-            -webkit-text-fill-color: initial;
+            letter-spacing: 0.1em;
+            font-weight: 800;
         }
 
         .macro {
             color: white;
-            font-weight: 800;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
 
         .tracker {
             color: $primary-color;
-            opacity: 0.9;
-            font-weight: 800;
+            background: linear-gradient(135deg, $primary-color, lighten($primary-color, 15%));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     }
 
@@ -376,7 +382,7 @@ body {
 }
 
 // ==========================
-// 7. BOTONES DE ELIMINAR
+// 7. BOTONES DE ELIMINAR / HISTORIAL
 // ==========================
 .dia-card {
     position: relative;
@@ -395,8 +401,7 @@ body {
     font-size: 1.4rem;
     cursor: pointer;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     transition: all 0.3s ease;
 
     &:hover {
@@ -406,19 +411,49 @@ body {
     }
 }
 
-.historial-borrar {
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-    padding: 6px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.3s ease;
+.historial-item {
+    @include glass-card;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 3px solid $primary-color;
+    transition: $transition-smooth;
 
     &:hover {
-        background: #ef4444;
-        color: white;
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateX(5px);
+    }
+
+    .historial-fecha {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: $text-main;
+    }
+
+    .historial-macros {
+        font-size: 0.85rem;
+        color: $text-muted;
+    }
+
+    .historial-borrar {
+        align-self: flex-end;
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+        padding: 4px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: #ef4444;
+            color: white;
+        }
     }
 }
 
@@ -486,7 +521,55 @@ body {
 }
 
 // ==========================
-// 9. MEDIA QUERIES
+// 9. HISTORIAL DE DÍAS
+// ==========================
+.container-dias-guardados {
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto 5rem;
+    padding: 40px;
+    @include glass-card;
+
+    .titulo-dias {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .lista-dias {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .dia-card {
+        padding: 24px;
+        @include glass-card;
+        background: rgba(255, 255, 255, 0.01);
+        transition: $transition-smooth;
+
+        &:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: $primary-color;
+        }
+
+        p {
+            margin: 4px 0;
+            font-size: 0.9rem;
+        }
+    }
+}
+
+// ==========================
+// 10. MEDIA QUERIES
 // ==========================
 @media (max-width: 1200px) {
     .main-content {
