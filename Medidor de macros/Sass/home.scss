@@ -1,38 +1,25 @@
-// ==============================
-//  MacroTracker - Variables SCSS (Premium Theme)
-// ==============================
-
-// ---------- TIPOGRAFÍA ----------
+// ==========================
+// 1. VARIABLES
+// ==========================
 $font-primary: 'Outfit', sans-serif;
-
-// ---------- BASE (FONDOS / TEXTO) ----------
 $bg-dark: #0f172a;
 $bg-card: rgba(255, 255, 255, 0.03);
 $glass-border: rgba(255, 255, 255, 0.1);
 $primary-color: #6366f1;
-
 $text-main: #f8fafc;
 $text-muted: #94a3b8;
-
-// ---------- COLORES MACROS ----------
 $macro-calories: #ff7e5f;
 $macro-protein: #3b82f6;
 $macro-carbs: #10b981;
 $macro-fats: #f59e0b;
-
-// ---------- BOTONES ----------
 $btn-secondary: #7c3aed;
-
-// ---------- RADIOS ----------
 $radius-lg: 24px;
 $radius-md: 16px;
-
-// ---------- TRANSICIONES ----------
 $transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-//=========== 
-// Mixins
-//=========== 
+// ==========================
+// 2. MIXINS
+// ==========================
 @mixin glass-card {
     background: $bg-card;
     border: 1px solid $glass-border;
@@ -46,10 +33,9 @@ $transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     justify-content: center;
 }
 
-//=========== 
-// Reset
-//=========== 
-
+// ==========================
+// 3. RESET Y BASE
+// ==========================
 * {
     margin: 0;
     padding: 0;
@@ -67,19 +53,18 @@ body {
     line-height: 1.5;
 }
 
-//=========== 
-// Navbar
-//=========== 
-
+// ==========================
+// 4. NAVEGACIÓN
+// ==========================
 .navbar {
-    background-color: $bg-dark; // Solid color to match habitos
-    padding: 1.25rem 0; // Padding from habitos
+    background-color: $bg-dark;
+    padding: 1.25rem 0;
     display: flex;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); // Shadow from habitos
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
     .container {
         display: flex;
@@ -102,7 +87,7 @@ body {
             font-size: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            background: none; // Reset gradient for branding consistency
+            background: none;
             background-clip: initial;
             -webkit-background-clip: initial;
             -webkit-text-fill-color: initial;
@@ -171,9 +156,9 @@ body {
     }
 }
 
-//=============
-// Main Content
-//=============
+// ==========================
+// 5. DISEÑO PRINCIPAL
+// ==========================
 .main-content {
     display: flex;
     gap: 2rem;
@@ -226,7 +211,6 @@ body {
                 font-weight: 700;
             }
 
-            // Macro variants
             &:nth-of-type(1) {
                 border-left: 4px solid $macro-calories;
 
@@ -341,6 +325,9 @@ body {
     }
 }
 
+// ==========================
+// 6. SECCIÓN PROGRESO
+// ==========================
 .progreso {
     flex: 1;
     padding: 30px;
@@ -388,16 +375,13 @@ body {
     }
 }
 
-/* ==========================
-   FIX: Botones de eliminar
-   ========================== */
-
-/* Card de día guardado */
+// ==========================
+// 7. BOTONES DE ELIMINAR
+// ==========================
 .dia-card {
-    position: relative; // 🔴 CLAVE para que no se superponga el botón
+    position: relative;
 }
 
-/* Botón eliminar DÍA guardado (×) */
 .btn-borrar-dia-historial {
     position: absolute;
     top: 15px;
@@ -422,7 +406,6 @@ body {
     }
 }
 
-/* Botón eliminar ALIMENTO (historial diario) */
 .historial-borrar {
     background: rgba(239, 68, 68, 0.15);
     border: 1px solid rgba(239, 68, 68, 0.3);
@@ -438,9 +421,10 @@ body {
         color: white;
     }
 }
-//===========
-// AI Recommendation
-//===========
+
+// ==========================
+// 8. SECCIÓN IA
+// ==========================
 .ai-card {
     margin: 4rem auto;
     padding: 40px;
@@ -501,9 +485,9 @@ body {
     }
 }
 
-//===========
-// Responsive Redesign (Final fix for "deformed" layout)
-//===========
+// ==========================
+// 9. MEDIA QUERIES
+// ==========================
 @media (max-width: 1200px) {
     .main-content {
         width: 95%;
