@@ -1,5 +1,5 @@
 // ==========================
-// 1. MODELO
+// 1. MODELO / INTERFACES
 // ==========================
 interface Habit {
     id: number
@@ -32,37 +32,106 @@ type aicontent = {
 }
 
 // ==========================
-// 2. ESTADO
+// 2. ESTADO ACTUAL
 // ==========================
 let habits: Habit[] = []
 
 // ==========================
-// 3. DOM
+// 3. ELEMENTOS DEL DOM
 // ==========================
 const habitList = document.querySelector('#HabitsList') as HTMLElement
 const newHabitButton = document.getElementById('btnNewHabit') as HTMLButtonElement
 const btnAiAction = document.getElementById('BtnAiAction') as HTMLButtonElement
+const aiTips = document.getElementById('aiTips') as HTMLDivElement
 
 if (!habitList || !newHabitButton || !btnAiAction) {
     throw new Error('Elementos del DOM no encontrados')
 }
 
 // ==========================
-// 4. PERSISTENCIA
+// 4. FUNCIONES AUXILIARES / LÓGICA
 // ==========================
-function saveHabits() {
-    localStorage.setItem('habits', JSON.stringify(habits))
+function toggleHabit(id: number) {
+    const habit = habits.find(h => h.id === id)
+    if (!habit) return
+
+    habit.completed = !habit.completed
+    habit.updatedAt = new Date()
+    saveHabits()
+    renderHabits()
 }
 
-function loadHabits() {
-    const data = localStorage.getItem('habits')
-    if (!data) return
+function generateRecommendations(habits: Habit[]): string[] {
+    const tips: string[] = []
 
-    habits = JSON.parse(data)
+    if (habits.length === 0) {
+        tips.push('Creá tu primer hábito. Empezá simple.')
+        return tips
+    }
+
+    const completed = habits.filter(h => h.completed).length
+    const ratio = completed / habits.length
+
+    if (ratio < 0.3) {
+        tips.push('Tus hábitos son muy exigentes. Bajá la dificultad.')
+    }
+
+    if (ratio >= 0.3 && ratio < 0.7) {
+        tips.push('Vas bien. La constancia es más importante que la intensidad.')
+    }
+
+    if (ratio >= 0.7) {
+        tips.push('Excelente disciplina. Podés sumar un nuevo hábito.')
+    }
+
+    return tips
+}
+
+function analyzeUser(habits: Habit[]): UserProfile {
+    if (habits.length === 0) {
+        return {
+            consistency: 'low',
+            discipline: 0,
+            abandonmentRate: 0,
+            focus: 'starter',
+            completed: 0,
+            lastCompleted: null
+        }
+    }
+
+    const now = Date.now()
+
+    return {
+        consistency: 'low',
+        discipline: 0,
+        abandonmentRate: 0,
+        focus: 'starter',
+        completed: 0,
+        lastCompleted: null
+    }
+
+}
+
+function buildAIContext(habits: Habit[]): aicontent {
+    const totalHabits = habits.length
+    const completedHabits = habits.filter(h => h.completed).length
+    const userAnalysis = analyzeUser(habits)
+
+    return {
+        habits,
+        summary: {
+            totalHabits,
+            completedHabits,
+            consistency: userAnalysis.consistency,
+            discipline: userAnalysis.discipline,
+            abandonmentRate: userAnalysis.abandonmentRate,
+            focus: userAnalysis.focus
+        }
+    }
 }
 
 // ==========================
-// 5. CRUD
+// 5. CRUD (CREATE/UPDATE/DELETE)
 // ==========================
 function createHabit(name: string, description: string) {
     const habit: Habit = {
@@ -78,7 +147,6 @@ function createHabit(name: string, description: string) {
     saveHabits()
     renderHabits()
 }
-
 
 function deleteHabit(id: number) {
     habits = habits.filter(h => h.id !== id)
@@ -97,7 +165,7 @@ function editHabit(id: number, changes: Partial<Omit<Habit, 'id' | 'createdAt'>>
 }
 
 // ==========================
-// 6. RENDER
+// 6. RENDERIZADO
 // ==========================
 function renderHabits() {
     habitList.innerHTML = ''
@@ -129,7 +197,7 @@ function renderHabits() {
 }
 
 // ==========================
-// 7. EVENTOS
+// 7. EVENT LISTENERS
 // ==========================
 habitList.addEventListener('click', e => {
     const target = e.target as HTMLElement
@@ -170,83 +238,6 @@ newHabitButton.addEventListener('click', () => {
     createHabit(name, description)
 })
 
-//checkbox
-
-function toggleHabit(id: number) {
-    const habit = habits.find(h => h.id === id)
-    if (!habit) return
-
-    habit.completed = !habit.completed
-    habit.updatedAt = new Date()
-    saveHabits()
-    renderHabits()
-}
-
-
-//consejos IA
-
-
-
-function generateRecommendations(habits: Habit[]): string[] {
-    const tips: string[] = []
-
-    if (habits.length === 0) {
-        tips.push('Creá tu primer hábito. Empezá simple.')
-        return tips
-    }
-
-    const completed = habits.filter(h => h.completed).length
-    const ratio = completed / habits.length
-
-    if (ratio < 0.3) {
-        tips.push('Tus hábitos son muy exigentes. Bajá la dificultad.')
-    }
-
-    if (ratio >= 0.3 && ratio < 0.7) {
-        tips.push('Vas bien. La constancia es más importante que la intensidad.')
-    }
-
-    if (ratio >= 0.7) {
-        tips.push('Excelente disciplina. Podés sumar un nuevo hábito.')
-    }
-
-
-    return tips
-}
-
-function analyzeUser(habits: Habit[]): UserProfile {
-    if (habits.length === 0) {
-        return {
-            consistency: 'low',
-            discipline: 0,
-            abandonmentRate: 0,
-            focus: 'starter',
-            completed: 0,
-            lastCompleted: null
-        }
-    }
-
-
-    const completedHabits = habits.filter(h => h.completed).length
-    const now = Date.now()
-
-    const freshness = habits.reduce((acc, habit) => {
-        const timeDiff = now - habit.updatedAt.getTime()
-        return acc + timeDiff
-    }, 0) / habits.length
-
-    return {
-        consistency: 'low',
-        discipline: 0,
-        abandonmentRate: 0,
-        focus: 'starter',
-        completed: 0,
-        lastCompleted: null
-    }
-
-}
-const aiTips = document.getElementById('aiTips') as HTMLDivElement
-
 btnAiAction.addEventListener('click', () => {
     const tips = generateRecommendations(habits)
 
@@ -258,28 +249,25 @@ btnAiAction.addEventListener('click', () => {
     })
 })
 
-function buildAIContext(habits: Habit[]): aicontent {
-    const totalHabits = habits.length
-    const completedHabits = habits.filter(h => h.completed).length
-    const userAnalysis = analyzeUser(habits)
+// ==========================
+// 8. PERSISTENCIA
+// ==========================
+function saveHabits() {
+    localStorage.setItem('habits', JSON.stringify(habits))
+}
 
-    return {
-        habits,
-        summary: {
-            totalHabits,
-            completedHabits,
-            consistency: userAnalysis.consistency,
-            discipline: userAnalysis.discipline,
-            abandonmentRate: userAnalysis.abandonmentRate,
-            focus: userAnalysis.focus
-        }
-    }
+function loadHabits() {
+    const data = localStorage.getItem('habits')
+    if (!data) return
+
+    habits = JSON.parse(data)
 }
 
 // ==========================
-// 8. INIT
+// 9. INIT
 // ==========================
 loadHabits()
 renderHabits()
+
 
 
