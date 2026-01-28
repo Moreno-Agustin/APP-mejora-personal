@@ -29,19 +29,6 @@ interface DiaGuardado {
 document.addEventListener("DOMContentLoaded", () => {
 
     // ==========================
-    // 0. NAVBAR MOBILE
-    // ==========================
-    const navToggle = document.querySelector("#navToggle");
-    const navLinks = document.querySelector("#navLinks");
-
-    if (navToggle && navLinks) {
-        navToggle.addEventListener("click", () => {
-            navLinks.classList.toggle("active");
-            navToggle.textContent = navLinks.classList.contains("active") ? "✕" : "☰";
-        });
-    }
-
-    // ==========================
     // 1. OBJETIVOS DIARIOS
     // ==========================
     const objetivos: Macros = {
