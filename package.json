@@ -1,0 +1,12 @@
+{
+  "name": "app-mejora-personal",
+  "version": "1.0.0",
+  "description": "Repositorio central de aplicaciones de mejora personal",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
+}

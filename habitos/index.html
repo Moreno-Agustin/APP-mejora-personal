@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Habitos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./Css/home.css">
+</head>
+
+<body>
+
+
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h2 class="macro">
+                    Macro
+                </h2>
+                <h2 class="tracker">
+                    Tracker
+                </h2>
+            </div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="../Medidor de macros/index.html">Macros</a>
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="usuario">
+                <img src="IMG/usuario.png" alt="">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="title">gestion de habitos</h1>
+
+        <div class="cards-wrapper">
+            <!-- Card 1: Habitos -->
+            <div class="box">
+                <div class="box-content">
+                    <h2 class="sub-title">Gestión de Hábitos</h2>
+                    <hr>
+                    <button id="btnNewHabit" class="btn-new-habit">
+                        + Nuevo Hábito
+                    </button>
+                    <div id="HabitsList" class="list-habits">
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: AI Recommendations -->
+            <div class="box ai-card">
+                <div class="box-content">
+                    <h2 class="sub-title">Recomendaciones de IA</h2>
+                    <hr>
+                    <div id="aiTips" class="ai-content">
+                        <p class="ai-placeholder">Aquí aparecerán sugerencias inteligentes para mejorar tus rutinas...
+                        </p>
+                    </div>
+                    <button id="BtnAiAction" class="btn-ai-action">Generar Tips</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>
