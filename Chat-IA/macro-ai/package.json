@@ -1,0 +1,21 @@
+{
+  "name": "macro-ai",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "compile:sass": "sass Sass:Css",
+    "compile:sass:watch": "sass --watch Sass:Css",
+    "compile:ts": "tsc --noEmit false --outDir Js --allowImportingTsExtensions false --rootDir src",
+    "compile:ts:watch": "tsc --noEmit false --outDir Js --allowImportingTsExtensions false --rootDir src --watch",
+    "build:assets": "npm run compile:sass && npm run compile:ts"
+  },
+  "devDependencies": {
+    "sass": "^1.97.3",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4"
+  }
+}
