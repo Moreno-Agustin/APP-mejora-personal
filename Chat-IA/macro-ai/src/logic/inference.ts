@@ -1,5 +1,5 @@
 // src/inference.ts
-import type { Signals, UserProfile } from "../types/types";
+import type { Signals, UserProfile } from "../types/types.js";
 
 export function inferProfile(signals: Signals): UserProfile {
     return {
