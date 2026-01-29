@@ -48,6 +48,7 @@ body {
     background: radial-gradient(circle at top right, #1e1b4b, $bg-dark);
     overflow: hidden;
 }
+
 a {
     color: $text-main;
     font-size: 0.95rem;
@@ -119,7 +120,7 @@ a {
     h2 {
         font-size: 1.5rem;
         background: linear-gradient(to right, #fff, $text-muted);
-        -webkit-background-clip: text;
+        -webkit-background: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 4px;
     }
