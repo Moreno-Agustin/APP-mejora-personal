@@ -1,4 +1,4 @@
-import '../Sass/style.scss';
+import '../Css/style.css';
 // src/index.ts
 // Global error handlers (dev only)
 if (import.meta.env.DEV) {
