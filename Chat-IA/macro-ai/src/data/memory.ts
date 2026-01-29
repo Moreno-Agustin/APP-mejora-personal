@@ -1,4 +1,4 @@
-import type { UserProfile } from "../types/types";
+import type { UserProfile } from "../types/types.js";
 
 const STORAGE_KEY = "macro_tracker_user";
 
