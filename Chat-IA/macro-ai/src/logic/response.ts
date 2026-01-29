@@ -1,6 +1,6 @@
 // src/response.ts
-import type { UserProfile } from "../types/types";
-import { buildPlan } from "./planner";
+import type { UserProfile } from "../types/types.js";
+import { buildPlan } from "./planner.js";
 
 export function generateResponse(profile: UserProfile): string {
   const plan = buildPlan(profile);
