@@ -1,10 +1,10 @@
+import '../Css/style.css';
 
-
-import { extractSignals } from "./logic/nlp";
-import { inferProfile } from "./logic/inference";
-import { generateResponse } from "./logic/response";
-import { loadUser, saveUser, updateUser } from "./data/memory";
-import type { UserProfile } from './types/types';
+import { extractSignals } from "./logic/nlp.js";
+import { inferProfile } from "./logic/inference.js";
+import { generateResponse } from "./logic/response.js";
+import { loadUser, saveUser, updateUser } from "./data/memory.js";
+import type { UserProfile } from "./types/types.js";
 
 // ==========================
 // 1. LÓGICA DE NEGOCIO
