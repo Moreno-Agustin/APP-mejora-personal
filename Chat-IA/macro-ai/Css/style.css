@@ -17,6 +17,31 @@ body {
   overflow: hidden;
 }
 
+a {
+  color: #f8fafc;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+a:hover {
+  color: #4f46e5;
+}
+a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #6366f1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+a:hover::after {
+  width: 100%;
+}
+
 .chat-container {
   width: 100%;
   max-width: 800px;
