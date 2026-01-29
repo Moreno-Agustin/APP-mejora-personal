@@ -1,6 +1,7 @@
 // src/types.ts
 
 export type Archetype = "football" | "bodybuilding" | "fitness";
+export type pendingQuestion = "weight" | null;
 
 export interface Signals {
     archetype?: Archetype;
@@ -13,4 +14,6 @@ export interface UserProfile {
     targetLevel: "elite" | "amateur";
     discipline: number;
     weight?: number;
+
+    pendingQuestion?: "weight";
 }
