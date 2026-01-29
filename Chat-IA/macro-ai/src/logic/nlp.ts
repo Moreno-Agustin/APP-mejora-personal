@@ -1,4 +1,4 @@
-import type { Signals } from "../types/types";
+import type { Signals } from "../types/types.js";
 
 export function extractSignals(text: string): Signals {
     const t = text.toLowerCase();
