@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             if (btn.classList.contains('btn-start')) {
-                window.location.href = '/Chat-IA/chat.html';
+                window.location.href = './Chat-IA/macro-ai/index.html';
             }
         });
     });
