@@ -1,4 +1,3 @@
-// memory.ts
 import type { UserProfile } from "../types/types";
 
 const STORAGE_KEY = "macro_tracker_user";
