@@ -1,13 +1,17 @@
+import "./nav.js";
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================
-    // 1. OBJETIVOS DIARIOS
+    // 1. OBJETIVOS DIARIOS (Dinámicos por IA)
     // ==========================
-    const objetivos = {
-        kcal: 2700,
-        pro: 150,
-        carb: 365,
-        grasa: 70,
+    let objetivos = {
+        kcal: 0,
+        pro: 0,
+        carb: 0,
+        grasa: 0,
     };
+    // La función se define más abajo, pero la invocamos aquí inicialmente
+    // Nota: en TS las funciones con nombre tienen hoisting dentro del block
+    // pero para evitar problemas con la let 'objetivos', la llamaremos después de la definición o usaremos la lógica aquí.
     // ==========================
     // 2. ESTADO ACTUAL DEL DÍA
     // ==========================
@@ -26,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // PROTEÍNAS ANIMALES
         huevo: { kcal: 155, pro: 13, carb: 1.1, grasa: 11 },
         clara_huevo: { kcal: 52, pro: 11, carb: 0.7, grasa: 0.2 },
+        carne_magra: { kcal: 150, pro: 26, carb: 0, grasa: 5 },
         carne: { kcal: 200, pro: 26, carb: 0, grasa: 10 },
         milanesa_carne: { kcal: 250, pro: 20, carb: 10, grasa: 15 },
         milanesa_pechuga: { kcal: 220, pro: 22, carb: 10, grasa: 12 },
@@ -51,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         queso_crema: { kcal: 340, pro: 6, carb: 4, grasa: 34 },
         queso_muzzarella: { kcal: 280, pro: 22, carb: 3, grasa: 20 },
         ricota: { kcal: 174, pro: 11, carb: 3, grasa: 13 },
+        proteina_suero: { kcal: 370, pro: 80, carb: 5, grasa: 3 }, // Suplemento
         // CARBOHIDRATOS PRINCIPALES
         arroz_cocido: { kcal: 130, pro: 2.7, carb: 28, grasa: 0.3 },
         arroz_crudo: { kcal: 365, pro: 7, carb: 80, grasa: 0.7 },
@@ -60,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         quinoa_cocida: { kcal: 120, pro: 4.4, carb: 21, grasa: 1.9 },
         lentejas_cocidas: { kcal: 116, pro: 9, carb: 20, grasa: 0.4 },
         garbanzos_cocidos: { kcal: 164, pro: 9, carb: 27, grasa: 2.6 },
+        avena: { kcal: 389, pro: 16.9, carb: 66, grasa: 6.9 },
         // PAN Y DERIVADOS
         pan_blanco: { kcal: 265, pro: 9, carb: 49, grasa: 3.2 },
         pan_integral: { kcal: 247, pro: 13, carb: 41, grasa: 4.2 },
@@ -70,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         naranja: { kcal: 47, pro: 0.9, carb: 12, grasa: 0.1 },
         frutilla: { kcal: 32, pro: 0.7, carb: 7.7, grasa: 0.3 },
         uvas: { kcal: 69, pro: 0.7, carb: 18, grasa: 0.2 },
+        arandanos: { kcal: 57, pro: 0.7, carb: 14, grasa: 0.3 },
         // VERDURAS 
         pure_papa: { kcal: 95, pro: 2, carb: 21, grasa: 2.5 },
         acelga: { kcal: 19, pro: 1.8, carb: 3.7, grasa: 0.2 },
@@ -127,10 +135,23 @@ document.addEventListener("DOMContentLoaded", () => {
             grasa: base.grasa * factor,
         };
     }
+    function loadAiObjetivos() {
+        const aiObjetivosStr = localStorage.getItem("macroObjetivos");
+        if (aiObjetivosStr) {
+            try {
+                const aiObjetivos = JSON.parse(aiObjetivosStr);
+                objetivos = { ...objetivos, ...aiObjetivos };
+            }
+            catch (e) {
+                console.error("Error cargando objetivos de IA", e);
+            }
+        }
+    }
     // ==========================
     // 6. RENDERIZADO
     // ==========================
     function render() {
+        loadAiObjetivos(); // Asegurar que los objetivos de la IA se apliquen antes de renderizar
         // Actualizar Textos
         if (kcalActual)
             kcalActual.textContent = Math.round(estado.kcal).toString();
@@ -140,6 +161,19 @@ document.addEventListener("DOMContentLoaded", () => {
             carbActual.textContent = Math.round(estado.carb).toString();
         if (grasaActual)
             grasaActual.textContent = Math.round(estado.grasa).toString();
+        // Actualizar Etiquetas de Objetivo
+        const kcalObj = document.getElementById("kcalObj");
+        const proObj = document.getElementById("proObj");
+        const carbObj = document.getElementById("carbObj");
+        const grasObj = document.getElementById("grasObj");
+        if (kcalObj)
+            kcalObj.textContent = Math.round(objetivos.kcal).toString();
+        if (proObj)
+            proObj.textContent = Math.round(objetivos.pro).toString();
+        if (carbObj)
+            carbObj.textContent = Math.round(objetivos.carb).toString();
+        if (grasObj)
+            grasObj.textContent = Math.round(objetivos.grasa).toString();
         // Actualizar Barras
         if (barraKcal)
             barraKcal.style.width = `${calcularPorcentaje(estado.kcal, objetivos.kcal)}%`;
@@ -151,7 +185,11 @@ document.addEventListener("DOMContentLoaded", () => {
             barraGrasa.style.width = `${calcularPorcentaje(estado.grasa, objetivos.grasa)}%`;
         renderHistorial();
         renderDiasGuardados();
+        renderFoods();
     }
+    window.addEventListener('focus', () => {
+        render();
+    });
     function renderHistorial() {
         if (!listaHistorial)
             return;
@@ -161,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
             div.className = "historial-item";
             const titulo = document.createElement("span");
             titulo.className = "historial-fecha";
-            titulo.textContent = `${item.alimento.toUpperCase()} (${item.gramos}g)`;
+            titulo.textContent = `${item.alimento.replace(/_/g, " ").toUpperCase()} (${item.gramos}g)`;
             const detalles = document.createElement("span");
             detalles.className = "historial-macros";
             detalles.textContent = `${Math.round(item.macros.kcal)} kcal | P: ${Math.round(item.macros.pro)} | C: ${Math.round(item.macros.carb)} | G: ${Math.round(item.macros.grasa)}`;
@@ -249,21 +287,43 @@ document.addEventListener("DOMContentLoaded", () => {
         guardarAutomatico();
         render();
     }
+    function fuzzyMatchAlimento(input) {
+        const i = input.toLowerCase().trim();
+        const keys = Object.keys(alimentos);
+        // 1. Coincidencia exacta
+        if (alimentos[i])
+            return i;
+        // 2. Coincidencia de subtexto (ej: "pechuga" -> "pollo_pechuga")
+        const subMatch = keys.find(k => k.includes(i) || i.includes(k));
+        if (subMatch)
+            return subMatch;
+        // 3. Razonamiento por typos comunes (si empieza igual o tiene 70% de letras iguales)
+        const closeMatch = keys.find(k => {
+            if (k[0] === i[0] && k.length > 3) {
+                let matches = 0;
+                for (let char of i)
+                    if (k.includes(char))
+                        matches++;
+                return matches / k.length > 0.7;
+            }
+            return false;
+        });
+        return closeMatch || null;
+    }
     // ==========================
     // 8. EVENT LISTENERS
     // ==========================
     if (btnAñadir) {
         btnAñadir.addEventListener("click", () => {
-            const listaAlimentos = Object.keys(alimentos).join(", ");
-            let nombre = prompt(`Ingresa el alimento:\nDisponibles: ${listaAlimentos}`);
-            if (!nombre)
+            let input = prompt("¿Qué almento consumiste? (Ej: pollo, pillo, arroz)");
+            if (!input)
                 return;
-            nombre = nombre.toLowerCase().trim();
-            if (!alimentos[nombre]) {
-                alert("⚠️ Alimento no encontrado en la base de datos.");
+            const nombreMatch = fuzzyMatchAlimento(input);
+            if (!nombreMatch) {
+                alert("⚠️ No pudimos reconocer ese alimento. Probá con otro nombre.");
                 return;
             }
-            const gramosStr = prompt("¿Cuántos gramos?");
+            const gramosStr = prompt(`Reconocido como: ${nombreMatch.replace("_", " ")}. ¿Cuántos gramos?`);
             if (!gramosStr)
                 return;
             const gramos = parseFloat(gramosStr);
@@ -271,7 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("⚠️ Cantidad inválida.");
                 return;
             }
-            agregarAlimento(nombre, gramos);
+            agregarAlimento(nombreMatch, gramos);
         });
     }
     if (btnBuscar) {
@@ -302,6 +362,28 @@ document.addEventListener("DOMContentLoaded", () => {
             generarRecomendacionesIA();
         });
     }
+    function renderFoods() {
+        const aiFoodsList = document.querySelector("#aiFoodsList");
+        const savedSugerencias = localStorage.getItem("macroAlimentosSugeridos");
+        if (aiFoodsList && savedSugerencias) {
+            try {
+                const sugerencias = JSON.parse(savedSugerencias);
+                aiFoodsList.innerHTML = "";
+                sugerencias.forEach((s) => {
+                    const item = document.createElement("div");
+                    item.style.padding = "10px";
+                    item.style.background = "rgba(255,255,255,0.08)";
+                    item.style.borderRadius = "8px";
+                    item.style.textAlign = "center";
+                    item.textContent = s;
+                    aiFoodsList.appendChild(item);
+                });
+            }
+            catch (e) {
+                console.error("Error renderizando comidas IA", e);
+            }
+        }
+    }
     function generarRecomendacionesIA() {
         const tips = [];
         const faltaKcal = objetivos.kcal - estado.kcal;
@@ -320,10 +402,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Análisis de Proteína
         if (estado.pro < objetivos.pro * 0.7 && estado.kcal > 0) {
             tips.push("Tu consumo de proteínas es bajo. Intenta añadir claras de huevo o pollo. 🍗");
-        }
-        // Análisis de Grasas
-        if (estado.grasa > objetivos.grasa) {
-            tips.push("Has superado tu límite de grasas. Reduce aceites y frutos secos por hoy. 🥑");
         }
         if (aiTips) {
             aiTips.innerHTML = "";
@@ -368,5 +446,4 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarDatos();
     render();
 });
-export {};
 //# sourceMappingURL=home.js.map
