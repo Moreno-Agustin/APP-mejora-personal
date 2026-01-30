@@ -120,7 +120,7 @@ a {
     h2 {
         font-size: 1.5rem;
         background: linear-gradient(to right, #fff, $text-muted);
-        -webkit-background: text;
+        -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 4px;
     }
@@ -160,9 +160,16 @@ a {
     max-width: 80%;
     padding: 14px 20px;
     border-radius: 18px;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     animation: messageFade 0.3s ease-out;
+    transition: all 0.3s ease;
+
+    &:hover {
+        filter: brightness(1.1);
+    }
 }
 
 @keyframes messageFade {
@@ -179,10 +186,36 @@ a {
 
 .ai-message {
     align-self: flex-start;
-    background: $glass;
-    border: 1px solid $glass-border;
+    @include glass-effect;
     color: $text-main;
     border-bottom-left-radius: 4px;
+
+    &.thinking {
+        font-style: italic;
+        opacity: 0.7;
+        position: relative;
+
+        &::after {
+            content: "...";
+            display: inline-block;
+            animation: blink 1s infinite;
+            width: 20px;
+        }
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 .user-message {
