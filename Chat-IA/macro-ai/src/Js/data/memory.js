@@ -1,15 +1,8 @@
-const STORAGE_KEY = "macro_tracker_user";
+const KEY = "sports_ai_user";
 export function loadUser() {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
+    const data = localStorage.getItem(KEY);
+    return data ? JSON.parse(data) : null;
 }
-export function saveUser(profile) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-}
-export function updateUser(partial) {
-    const user = loadUser();
-    if (!user)
-        return;
-    const updated = { ...user, ...partial };
-    saveUser(updated);
+export function saveUser(user) {
+    localStorage.setItem(KEY, JSON.stringify(user));
 }
