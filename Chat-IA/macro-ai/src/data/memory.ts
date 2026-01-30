@@ -1,20 +1,12 @@
 import type { UserProfile } from "../types/types.js";
 
-const STORAGE_KEY = "macro_tracker_user";
+const KEY = "sports_ai_user";
 
 export function loadUser(): UserProfile | null {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
+    const data = localStorage.getItem(KEY);
+    return data ? JSON.parse(data) : null;
 }
 
-export function saveUser(profile: UserProfile) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-}
-
-export function updateUser(partial: Partial<UserProfile>) {
-    const user = loadUser();
-    if (!user) return;
-
-    const updated = { ...user, ...partial };
-    saveUser(updated);
+export function saveUser(user: UserProfile): void {
+    localStorage.setItem(KEY, JSON.stringify(user));
 }
