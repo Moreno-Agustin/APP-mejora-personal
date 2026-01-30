@@ -26,12 +26,15 @@
                     Tracker
                 </h2>
             </div>
+            <button class="btn-menu">☰</button>
             <div class="nav-links">
                 <a href="../index.html">Home</a>
                 <a href="../habitos/habitos.html">habitos</a>
-                <a href="#">About</a>
-                <a href="#">Services</a>
+                <a href="../Chat-IA/macro-ai/index.html">Coach</a>
+                <a href="../patrocinadores/patrocinadores.html">Patrocinadores</a>
                 <a href="#">Contact</a>
+                <button class="btn-cerrar">X</button>
+                <img class="responsive-nav" src="IMG/usuario.png" alt="">
             </div>
             <div class="usuario">
                 <img src="IMG/usuario.png" alt="">
@@ -43,6 +46,7 @@
     <!-- 3. CONTENIDO PRINCIPAL     -->
     <!-- ========================== -->
     <div class="main-content">
+
         <div class="container-resumen">
             <h2 class="resumen">Resumen de Hoy</h2>
             <div class="resumen-contenido">
@@ -131,6 +135,14 @@
     <div class="box ai-card">
         <div class="box-content">
             <h2 class="sub-title">Recomendaciones de IA</h2>
+            <div id="aiFoods" class="ai-foods-container"
+                style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                <h3 style="font-size: 0.9rem; color: #fbbf24; margin-bottom: 10px;">🍽 Ejemplos de Comidas</h3>
+                <div id="aiFoodsList"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem;">
+                    <!-- Se llena con JS -->
+                </div>
+            </div>
             <div id="aiTips" class="ai-content">
                 <p class="ai-placeholder">Aquí aparecerán sugerencias inteligentes para mejorar tus rutinas...
                 </p>
