@@ -24,7 +24,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 .navbar .container {
   display: flex;
@@ -35,6 +35,7 @@ body {
   width: 90%;
   max-width: 1200px;
   padding: 0;
+  position: relative;
 }
 .navbar .logo {
   display: flex;
@@ -46,7 +47,7 @@ body {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .navbar .logo:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.1);
 }
 .navbar .logo h2 {
   font-size: 1.5rem;
@@ -92,6 +93,11 @@ body {
 }
 .navbar .nav-links a:hover::after {
   width: 100%;
+}
+.navbar .btn-menu,
+.navbar .btn-cerrar,
+.navbar .responsive-nav {
+  display: none;
 }
 .navbar .usuario img {
   width: 40px;
@@ -492,15 +498,94 @@ body {
   }
 }
 @media (max-width: 768px) {
+  .navbar {
+    height: 80px;
+    padding: 0;
+  }
   .navbar .container {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
+    height: 100%;
+  }
+  .navbar .btn-menu {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 101;
   }
   .navbar .nav-links {
-    gap: 1.5rem;
-    flex-wrap: wrap;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 250px;
+    height: 100vh;
+    background: #0f172a;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    background: rgba(18, 3, 44, 0.144);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    border-radius: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: -10px 0 30px rgba(48, 31, 82, 0.596);
+  }
+  .navbar .nav-links.active {
+    right: 0;
+  }
+  .navbar .nav-links a {
+    font-size: 1.25rem;
+  }
+  .navbar .nav-links .btn-cerrar {
+    display: block;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  .navbar .nav-links .btn-cerrar:hover {
+    opacity: 1;
+  }
+  .navbar .nav-links .responsive-nav {
+    display: block;
+    width: 60px;
+    height: 60px;
+    border: 2px solid #6366f1;
+    border-radius: 50%;
+    margin-top: 2rem;
+    object-fit: cover;
+  }
+  .navbar .usuario {
+    display: none;
+  }
+  .navbar::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+  }
+  .navbar:has(.nav-links.active)::before {
+    opacity: 1;
+    visibility: visible;
   }
   .container-resumen {
     padding: 25px;
