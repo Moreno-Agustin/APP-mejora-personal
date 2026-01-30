@@ -77,7 +77,7 @@ a:hover::after {
 .chat-header h2 {
   font-size: 1.5rem;
   background: linear-gradient(to right, #fff, #94a3b8);
-  -webkit-background: text;
+  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 4px;
 }
@@ -109,9 +109,15 @@ a:hover::after {
   max-width: 80%;
   padding: 14px 20px;
   border-radius: 18px;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
   animation: messageFade 0.3s ease-out;
+  transition: all 0.3s ease;
+}
+.message:hover {
+  filter: brightness(1.1);
 }
 
 @keyframes messageFade {
@@ -128,10 +134,33 @@ a:hover::after {
   align-self: flex-start;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
   color: #f8fafc;
   border-bottom-left-radius: 4px;
 }
+.ai-message.thinking {
+  font-style: italic;
+  opacity: 0.7;
+  position: relative;
+}
+.ai-message.thinking::after {
+  content: "...";
+  display: inline-block;
+  animation: blink 1s infinite;
+  width: 20px;
+}
 
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 .user-message {
   align-self: flex-end;
   background: #6366f1;
