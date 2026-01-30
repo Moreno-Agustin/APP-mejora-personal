@@ -1,4 +1,4 @@
-"use strict";
+import "./nav.js";
 // ==========================
 // 2. ESTADO ACTUAL
 // ==========================
@@ -11,7 +11,7 @@ const newHabitButton = document.getElementById('btnNewHabit');
 const btnAiAction = document.getElementById('BtnAiAction');
 const aiTips = document.getElementById('aiTips');
 if (!habitList || !newHabitButton || !btnAiAction) {
-    throw new Error('Elementos del DOM no encontrados');
+    console.error('Elementos del DOM no encontrados');
 }
 // ==========================
 // 4. FUNCIONES AUXILIARES / LÓGICA
@@ -43,43 +43,6 @@ function generateRecommendations(habits) {
         tips.push('Excelente disciplina. Podés sumar un nuevo hábito.');
     }
     return tips;
-}
-function analyzeUser(habits) {
-    if (habits.length === 0) {
-        return {
-            consistency: 'low',
-            discipline: 0,
-            abandonmentRate: 0,
-            focus: 'starter',
-            completed: 0,
-            lastCompleted: null
-        };
-    }
-    const now = Date.now();
-    return {
-        consistency: 'low',
-        discipline: 0,
-        abandonmentRate: 0,
-        focus: 'starter',
-        completed: 0,
-        lastCompleted: null
-    };
-}
-function buildAIContext(habits) {
-    const totalHabits = habits.length;
-    const completedHabits = habits.filter(h => h.completed).length;
-    const userAnalysis = analyzeUser(habits);
-    return {
-        habits,
-        summary: {
-            totalHabits,
-            completedHabits,
-            consistency: userAnalysis.consistency,
-            discipline: userAnalysis.discipline,
-            abandonmentRate: userAnalysis.abandonmentRate,
-            focus: userAnalysis.focus
-        }
-    };
 }
 // ==========================
 // 5. CRUD (CREATE/UPDATE/DELETE)
@@ -115,6 +78,8 @@ function editHabit(id, changes) {
 // 6. RENDERIZADO
 // ==========================
 function renderHabits() {
+    if (!habitList)
+        return;
     habitList.innerHTML = '';
     habits.forEach(habit => {
         const div = document.createElement('div');
@@ -142,7 +107,7 @@ function renderHabits() {
 // ==========================
 // 7. EVENT LISTENERS
 // ==========================
-habitList.addEventListener('click', e => {
+habitList?.addEventListener('click', (e) => {
     const target = e.target;
     const habitElement = target.closest('.habit');
     if (!habitElement)
@@ -162,20 +127,21 @@ habitList.addEventListener('click', e => {
         editHabit(id, { name: newName, description: newDescription });
     }
     if (target.classList.contains('habit-check')) {
-        const habitElement = target.closest('.habit');
-        const habitId = Number(habitElement.dataset.id);
-        toggleHabit(habitId);
+        const hId = Number(habitElement.dataset.id);
+        toggleHabit(hId);
     }
 });
-newHabitButton.addEventListener('click', () => {
+newHabitButton?.addEventListener('click', () => {
     const name = prompt('Nombre del hábito');
     if (!name)
         return;
     const description = prompt('Descripción') ?? '';
     createHabit(name, description);
 });
-btnAiAction.addEventListener('click', () => {
+btnAiAction?.addEventListener('click', () => {
     const tips = generateRecommendations(habits);
+    if (!aiTips)
+        return;
     aiTips.innerHTML = '';
     tips.forEach(tip => {
         const p = document.createElement('p');
@@ -202,4 +168,8 @@ function loadHabits() {
 // ==========================
 loadHabits();
 renderHabits();
+window.addEventListener('focus', () => {
+    loadHabits();
+    renderHabits();
+});
 //# sourceMappingURL=main.js.map
