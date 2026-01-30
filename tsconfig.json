@@ -14,7 +14,8 @@
         "forceConsistentCasingInFileNames": true,
         "sourceMap": true,
         "skipLibCheck": true,
-        "removeComments": false
+        "removeComments": false,
+        "noEmit": false
     },
     "include": [
         "src/**/*",
