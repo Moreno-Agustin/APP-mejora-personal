@@ -52,7 +52,7 @@ export function respond(user: UserProfile, input: string): string {
         updatedUser.lastInteraction = now;
 
         // 3. Reason based on updated state
-        const thought = reason(updatedUser, intent);
+        const thought = reason(updatedUser, intent, input);
         let advice = thought.advice;
 
         // CRITICAL: Apply the AI's suggested changes to the user object
