@@ -61,7 +61,7 @@ export function respond(user: UserProfile, input: string): string {
             if (thought.suggestedChanges.clearStorage && thought.suggestedChanges.newSport) {
                 // Clear all localStorage
                 localStorage.clear();
-                
+
                 // Create new user profile with the new sport
                 const newUser: UserProfile = {
                     sport: thought.suggestedChanges.newSport as Sport,
@@ -74,13 +74,13 @@ export function respond(user: UserProfile, input: string): string {
                     stage: "initial",
                     history: []
                 };
-                
+
                 saveUser(newUser);
                 syncWithExternalApps(newUser, advice);
-                
+
                 return advice + "\n\nTu perfil ha sido completamente reiniciado con el nuevo deporte. Puedes continuar solicitando tu plan personalizado.";
             }
-            
+
             Object.assign(updatedUser, thought.suggestedChanges);
             // Force immediate save to ensure sport change persists
             saveUser(updatedUser);
