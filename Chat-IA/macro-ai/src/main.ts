@@ -6,8 +6,23 @@ import { syncWithExternalApps } from "./domain/integration.js";
 
 function mapGoal(text: string): Goal {
     const t = text.toLowerCase();
-    if (t.includes("musculo") || t.includes("volumen") || t.includes("muscle") || t.includes("ganar")) return "muscle";
-    if (t.includes("grasa") || t.includes("peso") || t.includes("definir") || t.includes("fat")) return "fat_loss";
+    if (/hipertrofia|hipertrofia_goal|hypertrophy/.test(t)) return "hypertrophy";
+    if (/volumen|volumen_goal|volume|bulk/.test(t)) return "volume";
+    if (/definicion|definir|definicion_goal|cutting|perder grasa|perder/.test(t)) return "cutting";
+    if (/fuerza|fuerza_goal|strength/.test(t)) return "strength";
+    if (/potencia|potencia_goal|power|explosiv/.test(t)) return "power";
+    if (/resistencia|resistencia_goal|endurance|cardio/.test(t)) return "endurance";
+    if (/movilidad|movilidad_goal|flexibilidad|flexibility|mobility/.test(t)) return "mobility";
+    if (/rehabilitacion|rehab|rehab_goal|recovery|recuperaci/.test(t)) return "rehab";
+    if (/mantenimiento|mantenimiento_goal|maintenance/.test(t)) return "maintenance";
+    if (/salud|salud_goal|health/.test(t)) return "health";
+    if (/combate|combate_goal|mma|boxeo|combat/.test(t)) return "combat";
+    if (/competitivo|competitivo_goal|competitive|competit/.test(t)) return "competitive";
+    if (/performance|performance_goal/.test(t)) return "performance";
+    // Backwards-compatible: mapear goals antiguos a nuevos
+    if (/musculo|muscle|muscle_goal/.test(t)) return "hypertrophy";
+    if (/grasa|fat|fat_loss|fat_loss_goal/.test(t)) return "cutting";
+
     return "performance";
 }
 
@@ -18,9 +33,26 @@ function mapGoal(text: string): Goal {
 const QUESTIONS = [
     "¿Cuál es tu género? (masculino o femenino)",
     "¿Qué deporte practicás? (futbol, gym, crossfit, running, etc.)",
-    "¿Cuál es tu objetivo? (muscle, fat_loss, performance)",
+    "¿Cuál es tu objetivo principal?",
     "¿Cuál es tu peso actual (kg), altura (cm) y edad?",
     "Del 1 al 10, ¿cómo evaluarías tu disciplina?",
+];
+
+// Opciones de objetivos para mostrar al usuario
+export const GOAL_OPTIONS = [
+    { label: "🏋️ Hipertrofia (ganar músculo definido)", value: "hypertrophy" },
+    { label: "📈 Volumen (subir masa y peso corporal)", value: "volume" },
+    { label: "🔥 Definición (perder grasa sin perder músculo)", value: "cutting" },
+    { label: "💪 Fuerza máxima", value: "strength" },
+    { label: "⚡ Potencia explosiva", value: "power" },
+    { label: "🏃 Resistencia / Cardio", value: "endurance" },
+    { label: "🚀 Rendimiento deportivo", value: "performance" },
+    { label: "🥊 Performance combate", value: "combat" },
+    { label: "⚽ Performance competitivo", value: "competitive" },
+    { label: "🧘 Movilidad y flexibilidad", value: "mobility" },
+    { label: "🛠 Rehabilitación / recuperación", value: "rehab" },
+    { label: "⚖ Mantenimiento", value: "maintenance" },
+    { label: "🌱 Salud general", value: "health" }
 ];
 
 export function handleUserInput(text: string): string {
@@ -64,7 +96,15 @@ function handleOnboarding(user: UserProfile, text: string): string {
                 }
                 const sport = mapSport(text);
                 if (!sport) {
-                    return "No logré identificar ese deporte. ¿Podrías decirme qué deporte practicás? (ej: gym, futbol, running...)";
+                    // Intentar detectar variaciones comunes
+                    const lowerText = text.toLowerCase().trim();
+                    if (lowerText === "mma" || lowerText.includes("mma") || lowerText.includes("artes mixtas")) {
+                        user.sport = "mma";
+                        user.onboardingStep = 2;
+                        saveUser(user);
+                        return `Entendido. Vamos por ese objetivo de MMA. Ahora, dime: ${QUESTIONS[2]}`;
+                    }
+                    return "No logré identificar ese deporte. ¿Podrías decirme qué deporte practicás? (ej: gym, futbol, running, mma, crossfit...)";
                 }
                 user.sport = sport;
                 user.onboardingStep = 2;
@@ -117,14 +157,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!chatMessages || !chatForm || !chatInput) return;
 
     function addMessage(text: string, isUser = false) {
+        if (!chatMessages) return;
+        
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
 
         // Formatear saltos de línea y bolitas para que se vea profesional
         messageDiv.innerText = text;
 
-        chatMessages?.appendChild(messageDiv);
-        chatMessages?.scrollTo(0, chatMessages.scrollHeight);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTo(0, chatMessages.scrollHeight);
     }
 
     chatForm.addEventListener('submit', (e) => {
@@ -136,13 +178,15 @@ document.addEventListener('DOMContentLoaded', () => {
         chatInput.value = '';
 
         // AI thinking simulation
+        if (!chatMessages) return;
+        
         const thinkingId = "thinking-" + Date.now();
         const thinkingDiv = document.createElement('div');
         thinkingDiv.className = 'message ai-message thinking';
         thinkingDiv.id = thinkingId;
         thinkingDiv.innerText = "Escribiendo...";
-        chatMessages?.appendChild(thinkingDiv);
-        chatMessages?.scrollTo(0, chatMessages.scrollHeight);
+        chatMessages.appendChild(thinkingDiv);
+        chatMessages.scrollTo(0, chatMessages.scrollHeight);
 
         setTimeout(() => {
             try {
@@ -170,3 +214,5 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage(`¡Hola de nuevo! Detecto energía al ${energy}% y estamos en fase de ${stageLabel}. ¿Listo para seguir con tu plan de ${user.sport || 'gym'} hoy?`);
     }
 });
+
+console.log("hola");
