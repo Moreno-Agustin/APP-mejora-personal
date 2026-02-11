@@ -47,17 +47,18 @@ export function analyze(text: string): Intent {
     // Goal change detection
     if (/volumen|aumento masa|bulk/.test(t)) entities.push("volumen_goal");
     if (/ganar|masa|musculo|bulk|aumentar peso|ganar peso/.test(t)) entities.push("muscle_goal");
-    if (/perder|grasa|definir|adelgazar|fat|delgadez|reducir grasa/.test(t)) entities.push("fat_loss_goal");
+    if (/hipertrofia|hipertrofia_goal/.test(t)) entities.push("hipertrofia_goal");
+    if (/perder|grasa|definir|adelgazar|fat|delgadez|reducir grasa|definicion_goal/.test(t)) entities.push("definicion_goal");
     if (/rendimiento|performance|competir|mejorar|elite|optimizar/.test(t)) entities.push("performance_goal");
-    if (/fuerza|maxima|potencia|strength|power/.test(t)) entities.push("strength_goal");
+    if (/fuerza|fuerza_goal|maxima|potencia|strength|power/.test(t)) entities.push("fuerza_goal");
+    if (/potencia|potencia_goal|explosiv/.test(t)) entities.push("potencia_goal");
     if (/tonificar|toning|composicion|body composition/.test(t)) entities.push("toning_goal");
-    if (/mantener|maintenance|forma fisica|condicion/.test(t)) entities.push("maintenance_goal");
-    if (/rehab|rehabilitacion|lesion|recovery/.test(t)) entities.push("rehab_goal");
-    if (/resistencia|endurance|cardio|aerobic/.test(t)) entities.push("endurance_goal");
+    if (/mantener|mantenimiento|mantenimiento_goal|maintenance|forma fisica|condicion/.test(t)) entities.push("mantenimiento_goal");
+    if (/rehab|rehabilitacion|rehabilitacion_goal|lesion|recovery/.test(t)) entities.push("rehab_goal");
+    if (/resistencia|resistencia_goal|endurance|cardio|aerobic/.test(t)) entities.push("resistencia_goal");
     if (/explosividad|power|potencia/.test(t)) entities.push("power_goal");
     if (/agilidad|agility|coordinacion/.test(t)) entities.push("agility_goal");
-    if (/flexibilidad|flexibility|movilidad|mobility/.test(t)) entities.push("flexibility_goal");
-    if (/volumen|aumento masa|bulk/.test(t)) entities.push("volumen_goal");
+    if (/flexibilidad|flexibility|movilidad|movility|movilidad_goal/.test(t)) entities.push("movilidad_goal");
 
 
     // Sentiment analysis
