@@ -44,7 +44,7 @@ export function syncWithExternalApps(user: UserProfile, coachMessage?: string): 
     // 3. Sincronizar Mensaje del Coach y Estado
     localStorage.setItem("macroCoachContext", JSON.stringify({
         message: coachMessage || "Analizando tu progreso...",
-        goal: user.goal === "muscle" ? "Ganancia Muscular" : (user.goal === "fat_loss" ? "Pérdida de Grasa" : "Rendimiento"),
+        goal: user.goal === "hypertrophy" || user.goal === "volume" ? "Ganancia Muscular" : (user.goal === "cutting" ? "Pérdida de Grasa" : "Rendimiento"),
         sport: user.sport?.toUpperCase()
     }));
 }
