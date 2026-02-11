@@ -17,6 +17,8 @@
         "removeComments": false,
         "noEmit": false
     },
+    "rootDir": "./src",
+    "outDir": "./dist",
     "include": [
         "src/**/*",
         "habitos/src/**/*",
