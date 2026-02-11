@@ -15,7 +15,10 @@ export type Sport =
     | "artistic_swimming" | "diving" | "apnea" | "paddle_surf"
     | "fitness" | "functional_training" | "hiit" | "pilates" | "barre" | "mobility" | "stretching" | "rehab";
 
-export type Goal = "performance" | "muscle" | "fat_loss" | "health" | "elite_performance" | "strength" | "toning" | "maintenance" | "rehab" | "endurance" | "power" | "agility" | "flexibility" | "volumen";
+export type Goal =
+    | "hypertrophy" | "volume" | "cutting" | "strength" | "power"
+    | "endurance" | "mobility" | "rehab" | "maintenance" | "health"
+    | "combat" | "competitive" | "performance";
 export type Level = "beginner" | "intermediate" | "advanced" | "recreational" | "competitive" | "elite";
 export type ProcessStage = "initial" | "adaptation" | "progress" | "optimization" | "excellence";
 
@@ -55,7 +58,7 @@ export interface UserProfile {
     vegan?: boolean;
     injuries?: string[];
     dailyActivity?: "sedentary" | "light" | "active" | "very_active";
-    
+
     // System flags
     clearStorage?: boolean; // New: Flag to clear localStorage
     newSport?: string; // New: New sport for recreation
