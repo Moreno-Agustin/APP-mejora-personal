@@ -1,23 +1,16 @@
-import { UserProfile, Intent, AIReasoning } from "../types/types.js";
+import { UserProfile, Intent, AIReasoning, Sport, Goal } from "../types/types.js";
 
-function getGoalSuggestions(sport: string): string[] {
-    const suggestions: Record<string, string[]> = {
-        gym: ["Ganar masa muscular", "Disminuir grasa corporal", "Aumentar fuerza máxima", "Tonificar el cuerpo", "Mejorar composición corporal", "Aumentar peso corporal (volumen)", "Mantener forma física", "Rehabilitación y prevención de lesiones", "Volumen (aumento de masa muscular)"],
-        football: ["Mejorar resistencia aeróbica", "Aumentar velocidad y aceleración", "Reducir grasa corporal", "Mejorar potencia de piernas", "Incrementar agilidad y coordinación", "Optimizar rendimiento competitivo", "Prevención de lesiones"],
-        running: ["Mejorar resistencia cardiovascular", "Aumentar velocidad de carrera", "Reducir grasa corporal", "Preparación para competencia", "Mejorar economía de carrera", "Mantener condición física"],
-        cycling: ["Incrementar resistencia aeróbica", "Mejorar potencia y cadencia", "Reducir grasa corporal", "Preparación para eventos largos", "Mejorar recuperación muscular"],
-        martial: ["Aumentar resistencia anaeróbica", "Mejorar potencia y explosividad", "Reducir grasa corporal", "Incrementar fuerza funcional", "Mejorar reflejos y coordinación", "Preparación para combate", "Control de peso"],
-        basketball: ["Mejorar potencia explosiva", "Incrementar velocidad y agilidad", "Aumentar resistencia intermitente", "Ganar masa muscular funcional", "Reducir riesgo de lesiones", "Optimizar rendimiento en equipo"],
-        rugby: ["Mejorar potencia explosiva", "Incrementar velocidad y agilidad", "Aumentar resistencia intermitente", "Ganar masa muscular funcional", "Reducir riesgo de lesiones", "Optimizar rendimiento en equipo"],
-        swimming: ["Mejorar capacidad cardiovascular", "Aumentar resistencia muscular", "Reducir grasa corporal", "Mejorar técnica y eficiencia", "Rehabilitación de bajo impacto"],
-        tennis: ["Mejorar agilidad y reacción", "Aumentar resistencia específica", "Incrementar potencia de golpe", "Mejorar coordinación ojo-mano", "Mantener peso saludable"],
-        yoga: ["Mejorar movilidad y flexibilidad", "Reducir estrés", "Fortalecer core", "Prevenir lesiones", "Mejorar postura", "Recuperación activa"],
-        powerlifting: ["Aumentar fuerza máxima", "Mejorar técnica de levantamientos", "Ganar masa muscular", "Preparación para competencia", "Incrementar potencia"],
-        calisthenics: ["Aumentar fuerza relativa", "Mejorar control corporal", "Ganar masa muscular funcional", "Incrementar movilidad", "Desarrollar habilidades avanzadas"],
-        surf: ["Mejorar equilibrio y estabilidad", "Aumentar fuerza funcional", "Incrementar resistencia", "Prevención de lesiones", "Optimizar rendimiento técnico"],
-        rehab: ["Recuperación post lesión", "Mejora funcional del movimiento", "Reducción de grasa corporal", "Incremento de condición general", "Retorno progresivo al deporte"]
+function getGoalSuggestions(sport: Sport): Goal[] {
+    const suggestions: Record<string, Goal[]> = {
+        mma: ["combat", "cutting", "power", "endurance"],
+        boxing: ["combat", "cutting", "power", "endurance"],
+        gym: ["hypertrophy", "volume", "strength", "power"],
+        crossfit: ["hypertrophy", "volume", "strength", "power"],
+        football: ["competitive", "performance", "power", "endurance"],
+        rugby: ["competitive", "performance", "power", "endurance"],
+        yoga: ["mobility", "health", "maintenance"]
     };
-    return suggestions[sport] || ["Ganar músculo", "Perder grasa", "Mejorar rendimiento"];
+    return suggestions[sport] || ["performance", "health", "maintenance"];
 }
 
 export function reason(user: UserProfile, intent: Intent): AIReasoning {
@@ -33,35 +26,36 @@ export function reason(user: UserProfile, intent: Intent): AIReasoning {
     // Check for direct goal changes
     const lastInteraction = user.history[user.history.length - 1];
     const wasAskedForGoalChange = user.pendingGoalChange || (lastInteraction && lastInteraction.summary.includes("goal_change"));
-    
+
     if (entities.includes("goal_change") || wasAskedForGoalChange) {
         const goalEntities = entities.filter(e => e.endsWith("_goal"));
         if (goalEntities.length > 0) {
-            const goalMap: Record<string, string> = {
-                "muscle_goal": "muscle",
-                "fat_loss_goal": "fat_loss",
-                "performance_goal": "performance",
+            const goalMap: Record<string, Goal> = {
+                "hypertrophy_goal": "hypertrophy",
+                "volume_goal": "volume",
+                "cutting_goal": "cutting",
                 "strength_goal": "strength",
-                "toning_goal": "toning",
-                "maintenance_goal": "maintenance",
-                "rehab_goal": "rehab",
-                "endurance_goal": "endurance",
                 "power_goal": "power",
-                "agility_goal": "agility",
-                "flexibility_goal": "flexibility",
-                "volumen_goal": "volumen"
+                "endurance_goal": "endurance",
+                "mobility_goal": "mobility",
+                "rehab_goal": "rehab",
+                "maintenance_goal": "maintenance",
+                "health_goal": "health",
+                "combat_goal": "combat",
+                "competitive_goal": "competitive",
+                "performance_goal": "performance"
             };
             const newGoal = goalMap[goalEntities[0]];
             if (newGoal) {
-                suggestedChanges.goal = newGoal as any;
+                suggestedChanges.goal = newGoal;
                 advice = `¡Objetivo actualizado! He cambiado tu meta a **${newGoal.toUpperCase()}**. Ajustaré tu plan de nutrición y entrenamiento en consecuencia.`;
                 suggestedChanges.pendingGoalChange = false;
                 return { advice, suggestedChanges };
             }
         } else {
-            const sport = user.sport || "gym";
+            const sport = (user.sport || "gym") as Sport;
             const goalSuggestions = getGoalSuggestions(sport);
-            advice = `Entendido, vamos a ajustar tus metas para ${sport.toUpperCase()}. ¿Qué buscas ahora? Opciones: ${goalSuggestions.join(", ")}`;
+            advice = `Entendido, vamos a ajustar tus metas para ${sport.toUpperCase()}. ¿Qué buscas ahora? Opciones sugeridas: ${goalSuggestions.join(", ")}`;
             requiresClarification = true;
             return { advice, requiresClarification };
         }
@@ -69,7 +63,7 @@ export function reason(user: UserProfile, intent: Intent): AIReasoning {
 
     // Check for direct sport responses after asking for change
     const wasAskedForSportChange = user.pendingSportChange || (lastInteraction && lastInteraction.summary.includes("sport_change"));
-    
+
     if (entities.includes("change") || wasAskedForSportChange) {
         // Full list of supported sports keys for robust detection
         const allSports = [
@@ -95,35 +89,36 @@ export function reason(user: UserProfile, intent: Intent): AIReasoning {
         if (mentionedSport) {
             suggestedChanges.sport = mentionedSport as any;
             advice = `¡Deporte actualizado correctamente! He cambiado tu disciplina a **${mentionedSport.toUpperCase()}**. Tu perfil ha sido reiniciado con el nuevo deporte.`;
-            
+
             // Add flag to trigger localStorage clear
             suggestedChanges.clearStorage = true;
             suggestedChanges.newSport = mentionedSport;
             suggestedChanges.pendingSportChange = false;
-            
+
             return { advice, suggestedChanges };
         }
 
         // Check for goal changes
         const goalEntities = entities.filter(e => e.endsWith("_goal"));
         if (goalEntities.length > 0) {
-            const goalMap: Record<string, string> = {
-                "muscle_goal": "muscle",
-                "fat_loss_goal": "fat_loss",
-                "performance_goal": "performance",
+            const goalMap: Record<string, Goal> = {
+                "hypertrophy_goal": "hypertrophy",
+                "volume_goal": "volume",
+                "cutting_goal": "cutting",
                 "strength_goal": "strength",
-                "toning_goal": "toning",
-                "maintenance_goal": "maintenance",
-                "rehab_goal": "rehab",
-                "endurance_goal": "endurance",
                 "power_goal": "power",
-                "agility_goal": "agility",
-                "flexibility_goal": "flexibility",
-                "volumen_goal": "volumen"
+                "endurance_goal": "endurance",
+                "mobility_goal": "mobility",
+                "rehab_goal": "rehab",
+                "maintenance_goal": "maintenance",
+                "health_goal": "health",
+                "combat_goal": "combat",
+                "competitive_goal": "competitive",
+                "performance_goal": "performance"
             };
             const newGoal = goalMap[goalEntities[0]];
             if (newGoal) {
-                suggestedChanges.goal = newGoal as any;
+                suggestedChanges.goal = newGoal;
                 advice = `¡Objetivo actualizado! He cambiado tu meta a **${newGoal.toUpperCase()}**. Ajustaré tu plan de nutrición y entrenamiento en consecuencia.`;
                 suggestedChanges.pendingGoalChange = false;
                 return { advice, suggestedChanges };
@@ -143,7 +138,7 @@ export function reason(user: UserProfile, intent: Intent): AIReasoning {
         }
     }
 
-    if (entities.includes("elite_goal")) suggestedChanges.goal = "elite_performance";
+    if (entities.includes("elite_goal")) suggestedChanges.goal = "combat";
     if (entities.includes("recreational_level")) suggestedChanges.level = "recreational";
     if (entities.includes("beginner_level")) suggestedChanges.level = "beginner";
 
@@ -161,9 +156,9 @@ export function reason(user: UserProfile, intent: Intent): AIReasoning {
 
     // 3. LOGIC BY CATEGORY (Professional Insight)
     if (category === "nutrition") {
-        if (user.goal === "elite_performance") {
+        if (user.goal === "combat" || user.goal === "competitive") {
             advice = "Para el nivel de élite que buscamos, el timing es todo. Necesitamos cargar carbohidratos 3 horas antes del entrenamiento y proteína de rápida absorción después. ¿Cómo llevas la organización de tus comidas en el día?";
-        } else if (user.goal === "fat_loss") {
+        } else if (user.goal === "cutting") {
             const adherenceNote = user.discipline < 0.6 ? "No busques perfección, busca constancia. Si un día fallas, el siguiente volvemos." : "Tu disciplina es de hierro, podemos ajustar un poco más el déficit si te sientes con energía.";
             advice = `Estamos en fase de definición. ${adherenceNote} ¿Has notado cambios en tu saciedad con las recomendaciones actuales?`;
         } else {
