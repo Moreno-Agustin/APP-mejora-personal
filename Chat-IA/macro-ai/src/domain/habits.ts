@@ -52,8 +52,7 @@ export function buildHabits(user: UserProfile): string[] {
         habits.push("Revisión de jugadas o táctica personal");
     }
 
-    if (user.goal === "fat_loss") habits.push("Eliminar bebidas calóricas");
-    if (user.goal === "elite_performance") habits.push("Suplementación (Creatina/Beta-alanina) según protocolo");
-
+    if (user.goal === "cutting") habits.push("Eliminar bebidas calóricas");
+    if (user.goal === "combat" || user.goal === "competitive") habits.push("Suplementación (Creatina/Beta-alanina) según protocolo");
     return habits;
 }
