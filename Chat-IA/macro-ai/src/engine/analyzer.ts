@@ -28,12 +28,15 @@ export function analyze(text: string): Intent {
     }
 
     // Change/Modification detection (Flexible regex for different Spanish forms)
-    if (/cambi|ajust|modif|otro|diferent|no me gusta|correg|actualiz/.test(t)) {
+    if (/cambi|ajust|modif|otro|diferent|no me gusta|correg|actualiz|quiero cambiar|deseo cambiar|necesito cambiar|hacer un cambio|realizar un cambio|modificar|variar|alterar|revisar|actualizar/.test(t)) {
         entities.push("change");
         urgency = 0.6;
-        if (/deporte|disciplina/.test(t)) entities.push("sport_change");
-        if (/objetivo|meta/.test(t)) entities.push("goal_change");
-        if (/plan/.test(t)) entities.push("plan_change");
+        // Detectar qué quiere cambiar específicamente
+        if (/deporte|disciplina|sport|practico|practicar/.test(t)) entities.push("sport_change");
+        if (/objetivo|meta|goal|quiero|busco/.test(t)) entities.push("goal_change");
+        if (/plan|rutina|programa|todo|completo/.test(t)) entities.push("plan_change");
+        if (/nivel|level|competitividad|competitivo|elite|principiante|intermedio|avanzado/.test(t)) entities.push("level_change");
+        if (/disciplina|constancia|adherencia|compromiso|dedicacion/.test(t)) entities.push("discipline_change");
     }
 
 
@@ -43,6 +46,14 @@ export function analyze(text: string): Intent {
     if (/salud|recreativo|hobby|divertirme/.test(t)) entities.push("recreational_level");
     if (/empezar|arrancar|nuevo|principiante/.test(t)) entities.push("beginner_level");
     if (/lesion|dolor|molestia|hombro|esquilda|rodilla/.test(t)) entities.push("injury");
+    
+    // Level detection
+    if (/principiante|beginner|empezando/.test(t)) entities.push("beginner");
+    if (/intermedio|intermediate|medio/.test(t)) entities.push("intermediate");
+    if (/avanzado|advanced/.test(t)) entities.push("advanced");
+    if (/recreativo|recreational/.test(t)) entities.push("recreational");
+    if (/competitivo|competitive/.test(t)) entities.push("competitive");
+    if (/elite|profesional/.test(t)) entities.push("elite");
 
     // Goal change detection
     if (/volumen|aumento masa|bulk/.test(t)) entities.push("volumen_goal");
