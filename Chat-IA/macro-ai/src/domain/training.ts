@@ -1,6 +1,17 @@
 import { UserProfile } from "../types/types.js";
 import { SPORT_PROFILES } from "./sports.js";
 
+function normalizeGoal(g?: string) {
+    if (!g) return "health";
+    const t = g.toLowerCase();
+    if (t === "hypertrophy" || t === "volume" || t === "volumen") return "muscle";
+    if (t === "cutting" || t === "definicion" || t === "definicion_goal") return "fat_loss";
+    if (t === "combat" ) return "elite_performance";
+    if (t === "competitive") return "performance";
+    if (t === "mobility") return "flexibility";
+    return t;
+}
+
 export function buildTraining(user: UserProfile) {
     const sportProfile = SPORT_PROFILES[user.sport || "gym"] || SPORT_PROFILES["gym"];
 
@@ -10,11 +21,12 @@ export function buildTraining(user: UserProfile) {
     if (user.level === "advanced" || user.level === "competitive") sessions = 5;
     if (user.level === "elite") sessions = 6;
 
-    if (user.goal === "fat_loss" && sessions > 5) sessions = 5; // Recovery focus
-    if (user.goal === "health") sessions = 3;
-    if (user.goal === "elite_performance") sessions = Math.max(sessions, 5);
-    if (user.goal === "maintenance") sessions = 3;
-    if (user.goal === "rehab") sessions = 2;
+    const goal = normalizeGoal(user.goal as any);
+    if (goal === "fat_loss" && sessions > 5) sessions = 5; // Recovery focus
+    if (goal === "health") sessions = 3;
+    if (goal === "elite_performance") sessions = Math.max(sessions, 5);
+    if (goal === "maintenance") sessions = 3;
+    if (goal === "rehab") sessions = 2;
 
     // Detalle de sesiones según deporte
     const details = generateTrainingDetails(user, sessions);
@@ -38,7 +50,7 @@ export function buildTraining(user: UserProfile) {
 
     return {
         sessions,
-        focus: focusMap[user.goal || "health"] || "Salud y Bienestar",
+        focus: focusMap[goal || "health"] || "Salud y Bienestar",
         methods: details,
         intensity: user.level === "elite" || user.level === "advanced" ? "Muy Alta (Crítica)" : (sportProfile.intensity > 1.3 ? "Alta" : "Moderada")
     };
