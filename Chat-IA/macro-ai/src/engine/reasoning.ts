@@ -13,8 +13,9 @@ function getGoalSuggestions(sport: Sport): Goal[] {
     return suggestions[sport] || ["performance", "health", "maintenance"];
 }
 
-export function reason(user: UserProfile, intent: Intent): AIReasoning {
+export function reason(user: UserProfile, intent: Intent, userText?: string): AIReasoning {
     const { category, sentiment, urgency, entities } = intent;
+    const text = (userText || "").toLowerCase();
     let advice = "";
     let suggestedChanges: Partial<UserProfile> = {};
     let requiresClarification = false;
@@ -63,8 +64,9 @@ export function reason(user: UserProfile, intent: Intent): AIReasoning {
 
     // Check for direct sport responses after asking for change
     const wasAskedForSportChange = user.pendingSportChange || (lastInteraction && lastInteraction.summary.includes("sport_change"));
+    const wasAskedForChange = user.pendingGoalChange || user.pendingSportChange || (lastInteraction && lastInteraction.summary.includes("change"));
 
-    if (entities.includes("change") || wasAskedForSportChange) {
+    if (entities.includes("change") || wasAskedForChange) {
         // Full list of supported sports keys for robust detection
         const allSports = [
             "football", "basketball", "gym", "crossfit", "running", "cycling",
@@ -125,14 +127,105 @@ export function reason(user: UserProfile, intent: Intent): AIReasoning {
             }
         }
 
+        // Check for level changes
+        if (entities.includes("level_change") || /nivel|level|competitividad|competitivo|elite|principiante|intermedio|avanzado|recreativo/.test(text)) {
+            const levelMatch = entities.find(e => ["beginner", "intermediate", "advanced", "recreational", "competitive", "elite"].includes(e));
+            if (levelMatch) {
+                suggestedChanges.level = levelMatch as any;
+                advice = `¡Nivel actualizado! He cambiado tu nivel a **${levelMatch.toUpperCase()}**. Ajustaré la intensidad de tu plan en consecuencia.`;
+                return { advice, suggestedChanges };
+            } else if (/principiante|beginner|empezando/.test(text)) {
+                suggestedChanges.level = "beginner";
+                advice = `¡Nivel actualizado! He cambiado tu nivel a **BEGINNER**. Ajustaré la intensidad de tu plan en consecuencia.`;
+                return { advice, suggestedChanges };
+            } else if (/intermedio|intermediate|medio/.test(text)) {
+                suggestedChanges.level = "intermediate";
+                advice = `¡Nivel actualizado! He cambiado tu nivel a **INTERMEDIATE**. Ajustaré la intensidad de tu plan en consecuencia.`;
+                return { advice, suggestedChanges };
+            } else if (/avanzado|advanced/.test(text)) {
+                suggestedChanges.level = "advanced";
+                advice = `¡Nivel actualizado! He cambiado tu nivel a **ADVANCED**. Ajustaré la intensidad de tu plan en consecuencia.`;
+                return { advice, suggestedChanges };
+            } else if (/elite|profesional|competitivo/.test(text)) {
+                suggestedChanges.level = "elite";
+                advice = `¡Nivel actualizado! He cambiado tu nivel a **ELITE**. Ajustaré la intensidad de tu plan en consecuencia.`;
+                return { advice, suggestedChanges };
+            } else {
+                advice = `¿Qué nivel quieres tener? Opciones:
+• **Beginner** - Estás empezando
+• **Intermediate** - Tienes experiencia básica
+• **Advanced** - Nivel avanzado
+• **Recreational** - Por diversión y salud
+• **Competitive** - Competes regularmente
+• **Elite** - Nivel profesional/competitivo alto
+
+¿Cuál te describe mejor?`;
+                requiresClarification = true;
+                return { advice, requiresClarification };
+            }
+        }
+
+        // Check for discipline changes
+        if (entities.includes("discipline_change") || /disciplina|constancia|adherencia/.test(text)) {
+            const discMatch = text.match(/\d+/);
+            if (discMatch) {
+                const discValue = parseInt(discMatch[0]);
+                if (discValue >= 1 && discValue <= 10) {
+                    suggestedChanges.discipline = discValue / 10;
+                    advice = `¡Disciplina actualizada! He ajustado tu nivel de disciplina a **${discValue}/10**. Esto afectará las recomendaciones de tu plan.`;
+                    return { advice, suggestedChanges };
+                }
+            } else {
+                advice = `¿Cómo calificarías tu nivel de disciplina del 1 al 10?
+• **1-3**: Necesitas más estructura y motivación
+• **4-6**: Tienes buena base pero puedes mejorar
+• **7-8**: Muy constante y comprometido
+• **9-10**: Disciplina excepcional
+
+¿Qué número del 1 al 10 te describe mejor?`;
+                requiresClarification = true;
+                return { advice, requiresClarification };
+            }
+        }
+
+        // Si detecta cambio pero no especifica qué, mostrar menú de opciones
+        if (entities.includes("change") && !entities.includes("sport_change") && !entities.includes("goal_change") && !entities.includes("plan_change") && !entities.includes("level_change") && !entities.includes("discipline_change")) {
+            const currentSport = user.sport || "no definido";
+            const currentGoal = user.goal || "no definido";
+            const currentLevel = user.level || "no definido";
+            const currentDiscipline = Math.round((user.discipline || 0.5) * 10);
+
+            advice = `¡Perfecto! Puedo ayudarte a cambiar cualquier aspecto de tu plan. Aquí están tus opciones:
+
+**📊 Tu perfil actual:**
+• Deporte: ${currentSport.toUpperCase()}
+• Objetivo: ${currentGoal.toUpperCase()}
+• Nivel: ${currentLevel.toUpperCase()}
+• Disciplina: ${currentDiscipline}/10
+
+**🔄 ¿Qué te gustaría cambiar?**
+
+1️⃣ **Deporte/Disciplina** - Cambiar el deporte que practicas
+2️⃣ **Objetivo/Meta** - Cambiar tu objetivo (hipertrofia, definición, fuerza, etc.)
+3️⃣ **Nivel** - Cambiar tu nivel (beginner, intermediate, advanced, elite, etc.)
+4️⃣ **Disciplina** - Ajustar tu nivel de constancia (1-10)
+5️⃣ **Todo el plan** - Reiniciar completamente tu plan
+
+Solo dime el número o el nombre de lo que quieres cambiar. Por ejemplo: "cambiar deporte", "quiero cambiar mi objetivo", "cambiar nivel", etc.`;
+
+            requiresClarification = true;
+            suggestedChanges.pendingGoalChange = true;
+            return { advice, requiresClarification };
+        }
+
         if (entities.includes("sport_change") || wasAskedForSportChange) {
-            advice = "¡Claro! ¿A qué deporte te gustaría cambiar? (Ej: Futbol, Crossfit, Running, Rugby, etc.) para que pueda ajustar todo tu plan.";
+            advice = "¡Claro! ¿A qué deporte te gustaría cambiar? (Ej: Futbol, Crossfit, Running, Rugby, MMA, etc.) para que pueda ajustar todo tu plan.";
             requiresClarification = true;
             return { advice, requiresClarification };
         }
 
         if (entities.includes("plan_change")) {
-            advice = "¡Claro! ¿Qué aspecto del plan quieres cambiar? Opciones: 1) Deporte/Disciplina, 2) Objetivo/Meta, 3) Nivel de intensidad, 4) Horarios, 5) Otro aspecto específico.";
+            advice = "¡Claro! ¿Qué aspecto del plan quieres cambiar? Opciones: 1) Deporte/Disciplina, 2) Objetivo/Meta, 3) Nivel de intensidad, 4) Disciplina/Constancia, 5) Todo el plan.";
             requiresClarification = true;
             return { advice, requiresClarification };
         }
