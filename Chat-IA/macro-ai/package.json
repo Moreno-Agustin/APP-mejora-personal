@@ -4,8 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "npm run watch",
+    "vite:dev": "vite",
+    "vite:build": "vite build",
     "preview": "vite preview"
   }
 }
